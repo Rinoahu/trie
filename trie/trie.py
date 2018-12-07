@@ -3163,6 +3163,8 @@ class trie:
                 #return Node.index
                 return self.get_leaf(Node)
 
+    def remove(self, S1):
+        pass
 
 
 
