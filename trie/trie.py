@@ -3054,20 +3054,31 @@ class trie:
         s1, c1 = 0, S1[0]
         if c1 not in self.root:
             nd = node(s1, e1)
-            nd.index.append(self.N)
+            nd.index = [s1, self.N]
             self.root[c1] = nd
             self.strings.append(S1[s1: e1])
             self.N += 1
             return 1
         else:
             Node = self.root[c1]
+            idx_old = Node.index[0]
             while s1 < e1:
-                idx, s0, e0 = Node.index[0], Node.start, Node.end
+                off, idx = Node.index[:2]
+                s0, e0 = Node.start, Node.end
                 S0 = self.strings[idx]
                 split = False
+                #print 'S0', S0, s0, e0, 'S1', S1, s1, e1
                 while s0 < e0 and s1 < e1:
-                    if S0[s0] != S1[s1]:
+                    #try:
+                    #    if S0[s0] != S1[s1]:
+                    #        break
+                    #except:
+                    #    print 'fk S0', S0, s0, e0, idx, len(S0), 'S1', S1, s1, e1, len(S1)
+                    #    raise SystemExit()
+
+                    if S0[s0-off] != S1[s1]:
                         break
+
                     s0 += 1
                     s1 += 1
 
@@ -3075,13 +3086,14 @@ class trie:
                 if s0 < e0:
                     nd = node(s0, e0)
                     nd.index = Node.index
-                    nd.child = Node.child
-                    c0 = S0[s0]
-                    Node.child = {c0: nd}
-                    Node.index = [idx]
-                    Node.e0 = s0
+                    nd.child = Node.child.copy()
+                    c0 = S0[s0-off]
+                    Node.child = {}
+                    Node.child[c0] = nd
+                    Node.index = nd.index[:2]
+                    Node.end = s0
                     #print 'split', S1, Node.index, nd.index
-
+                    #print 'split', S1, S0[:s0], Node.start, Node.end
 
                 if s1 < e1:
                     c1 = S1[s1]
@@ -3089,7 +3101,8 @@ class trie:
                         Node = Node.child[c1]
                     else:
                         nd = node(s1, e1)
-                        nd.index.append(self.N)
+                        #nd.index.append(self.N)
+                        nd.index = [s1, self.N]
                         Node.child[c1] = nd
                         self.strings.append(S1[s1: e1])
                         self.N += 1
@@ -3111,10 +3124,10 @@ class trie:
             node = stack.pop()
             if not node.child:
                 #print 'real leaf', node.index
-                index.extend(node.index)
+                index.extend(node.index[1:])
             else:
                 #print 'inner leaf', node.index 
-                index.extend(node.index[1:])
+                index.extend(node.index[2:])
                 stack.extend(node.child.values())
 
         return index
@@ -3130,11 +3143,12 @@ class trie:
             return []
  
         while s1 < e1:
-            idx, s0, e0 = Node.index[0], Node.start, Node.end
+            off, idx = Node.index[:2]
+            s0, e0 = Node.start, Node.end
             S0 = self.strings[idx]
             split = False
             while s0 < e0 and s1 < e1:
-                if S0[s0] != S1[s1]:
+                if S0[s0-off] != S1[s1]:
                     return []
                 s0 += 1
                 s1 += 1
