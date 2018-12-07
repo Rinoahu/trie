@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+rm trie/trie-c trie/trie.pyc
 git config --global user.email xiaohu@iastate.edu
 git config --global user.name Rinoahu
 
