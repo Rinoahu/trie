@@ -3271,6 +3271,7 @@ def entry_point(argv):
     clf = trie()
     #clf = {}
     flag = 0
+    y = ''
     f = open(qry, 'r')
     for y in readline(f):
         clf[y] = flag
