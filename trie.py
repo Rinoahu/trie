@@ -3050,7 +3050,7 @@ class trie:
         return -1
 
     def __setitem__(self, key, val):
-        self.insert(key)
+        self.insert(key, val)
 
 
     def insert(self, S1, val):
@@ -3265,12 +3265,12 @@ class Trie(object):
 def entry_point(argv):
     qry = argv[1]
 
-    N = int(argv[1])
-    y = 'xasfasdfasdxf'
-    y = y[:10] * int(N/10.)
+    #N = int(argv[1])
+    #y = 'xasfasdfasdxf'
+    #y = y[:10] * int(N/10.)
     clf = trie()
     #clf = {}
-	flag = 0
+    flag = 0
     f = open(qry, 'r')
     for y in readline(f):
         clf[y] = flag
