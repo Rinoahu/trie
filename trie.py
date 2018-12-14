@@ -3035,6 +3035,7 @@ class trie:
     def __init__(self):
         self.root = {}
         self.strings = []
+        self.values = []
         self.N = 0
 
     def split(self, Node):
@@ -3048,7 +3049,11 @@ class trie:
 
         return -1
 
-    def insert(self, S1):
+    def __setitem__(self, key, val):
+        self.insert(key)
+
+
+    def insert(self, S1, val):
         e1 = len(S1)
         assert e1 > 0
         s1, c1 = 0, S1[0]
@@ -3057,6 +3062,8 @@ class trie:
             nd.index = [s1, self.N]
             self.root[c1] = nd
             self.strings.append(S1[s1: e1])
+
+            self.values.append(val)
             self.N += 1
             return 1
         else:
@@ -3104,12 +3111,18 @@ class trie:
                         #nd.index.append(self.N)
                         nd.index = [s1, self.N]
                         Node.child[c1] = nd
+
                         self.strings.append(S1[s1: e1])
+
+                        self.values.append(val)
                         self.N += 1
                         return 1
                 else:
                     Node.index.append(self.N)
+
                     self.strings.append('')
+
+                    self.values.append(val)
                     self.N += 1
                     #print 'split', S1, Node.index, Node.child.values()[0].index
                     return 1
