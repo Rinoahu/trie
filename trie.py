@@ -3145,6 +3145,11 @@ class trie:
 
         return index
 
+
+    def __getitem__(self, S1):
+        return self.search(S1)
+
+
     def search(self, S1):
         e1 = len(S1)
         assert e1 > 0
@@ -3235,6 +3240,7 @@ class Trie(object):
 
         return child
 
+
     def search(self, data):
         node = self.root
         for i in data:
@@ -3250,27 +3256,30 @@ class Trie(object):
             node = child.left
 
         if node:
-            return node.index
+            return [self.values[elem] for elem in node.index]
         else:
             return []
 
 
 
 def entry_point(argv):
-    N = int(argv[1])
+    qry = argv[1]
 
-    #x = 'asdfasdfasdfasdf'
+    N = int(argv[1])
     y = 'xasfasdfasdxf'
     y = y[:10] * int(N/10.)
-    #clf = Trie()
     clf = trie()
-    #print x
-    #clf.insert(x, 0)
-    clf.insert(y)
-    clf.insert(y[:10])
+    #clf = {}
+	flag = 0
+    f = open(qry, 'r')
+    for y in readline(f):
+        clf[y] = flag
+        flag += 1
+    f.close()
+
 
     #print clf.search(x)
-    print clf.search(y[:10])
+    print clf[y]
     #print 'size', len(y), len(y)/2**20.
 
     return 0
