@@ -356,10 +356,10 @@ system("/usr/bin/samtools faidx $gene_fasta");
 foreach my $one (@furtherAnalysis_1){
 	#Run Bowtie2 against cpsK
 	if($SingleOrPaired eq "pe"){
-		system("bowtie2 -1 $fastq_directory/$one$forward.fastq $fastq_directory/$one$reverse.fastq -S $one\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
+		system("bowtie2 -p 8 -1 $fastq_directory/$one$forward.fastq $fastq_directory/$one$reverse.fastq -S $one\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
 	}
 	elsif($SingleOrPaired eq "se"){
-		system("bowtie2 -U $fastq_directory/$one*.fastq -S $one\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
+		system("bowtie2 -p 8 -U $fastq_directory/$one*.fastq -S $one\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
 	}
 	#Run Samtools to call SNPs
 	system("/usr/bin/samtools view -b -o $one\_vs_cpsK.bam -q 1 -S $one\_vs_cpsK.sam");
@@ -435,10 +435,10 @@ foreach my $one (@furtherAnalysis_1){
 foreach my $two (@furtherAnalysis_2){
 	#Run Bowtie against cpsK
 	if($SingleOrPaired eq "pe"){
-		system("bowtie2 -1 $fastq_directory/$two$forward.fastq $fastq_directory/$two$reverse.fastq -S $two\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
+		system("bowtie2 -p 8 -1 $fastq_directory/$two$forward.fastq $fastq_directory/$two$reverse.fastq -S $two\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");
 	}
 	elsif($SingleOrPaired eq "se"){
-		system("bowtie2 -U $fastq_directory/$two*.fastq -S $two\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");		
+		system("bowtie2 -p 8 -U $fastq_directory/$two*.fastq -S $two\_vs_cpsK.sam --very-sensitive-local --no-unal -a -x $gene_fasta");		
 	}
 
 	#Run Samtools to call SNPs
