@@ -68,7 +68,7 @@ f.close()
 #print('break 67', output)
 header = set()
 for i, j in output:
-    header = header.union([elem[0] for elme in j])
+    header = header.union([elem[0] for elem in j])
 
 #print(header)
 header = ['Sample'] + list(header)
