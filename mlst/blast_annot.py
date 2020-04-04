@@ -23,7 +23,7 @@ f.close()
 output = []
 for ref in [dir + '/' + elem for elem in os.listdir(dir) if elem.endswith('.fasta')]:
     #os.system('legacy_blast.pl formatdb -i %s -p F | tee log.txt'%ref)
-    os.system('legacy_blast.pl blastall -m 8 -e 1e-10 -a 4 -p blastn -i %s -d %s -o %s.blast8 | tee log.txt'%(qry, ref, ref))
+    os.system('legacy_blast.pl blastall -m 8 -e 1e-10 -a 8 -p blastn -i %s -d %s -o %s.blast8 | tee log.txt'%(qry, ref, ref))
 
     blast_flt = {}
     f = open(ref + '.blast8', 'r')
@@ -58,10 +58,34 @@ for ref in [dir + '/' + elem for elem in os.listdir(dir) if elem.endswith('.fast
 
         genes.extend(gene)
 
-    print('break 60', len(set([elem[0] for elem in genes])))
+    #print('break 60', len(set([elem[0] for elem in genes])))
 
-    output.append([ref, [elem[0] for elem in genes]])
+    output.append([ref, set([elem[0] for elem in genes])])
 
 f.close()
 
-print('break 67', output)
+#print('break 67', output)
+header = set()
+for i, j in output:
+    header = header.union(j)
+
+#print(header)
+header = ['Sample'] + list(header)
+
+header_id = {}
+flag = 0
+for i in header:
+    header_id[i] = flag
+    flag += 1
+
+print('\t'.join(header))
+for i, j in output:
+    out = ['-'] * len(header)
+    out[0] = i.split(os.sep)[-1].split('_')[0].split('.')[0]
+    for k in j:
+        out[header_id[k]] = k
+
+    print('\t'.join(out))
+
+
+
