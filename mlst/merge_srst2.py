@@ -30,7 +30,19 @@ for i in f0:
         table[j[0]] = ['-'] * len(h)
         table[j[0]][0] = j[0]
 
-    for k in j[1:]:
-         table[j[0]][0] = j[0]
+    for k, k1 in zip(h0[1:], j[1:]):
+        if k1 != '-':
+         table[j[0]][h_idx[k]] = k1
+
+
+print('\t'.join(h))
+tab = table.values()
+tab.sort(key = lambda x: x[0])
+or i in tab:
+    print('\t'.join(i))
+
+
+f0.close();
+f1.close();
        
 
