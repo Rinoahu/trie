@@ -35,7 +35,8 @@ for ref in [dir + '/' + elem for elem in os.listdir(dir) if elem.endswith('.fast
         cov = abs(qed-qst) * 1./ qln
         idy = float(idy)
         if idy >= 70 and cov >= .5:
-            tpd = qid.split('__')[1]
+            tpd = qid.split('__')[1:3]
+            tpd = tuple(tpd)
             try:
                 blast_flt[sid].append([tpd, sid, idy, qst, qed, sst, sed])
             except:
@@ -67,7 +68,7 @@ f.close()
 #print('break 67', output)
 header = set()
 for i, j in output:
-    header = header.union(j)
+    header = header.union([elem[0] for elme in j])
 
 #print(header)
 header = ['Sample'] + list(header)
@@ -82,8 +83,9 @@ print('\t'.join(header))
 for i, j in output:
     out = ['-'] * len(header)
     out[0] = i.split(os.sep)[-1].split('_')[0].split('.')[0]
-    for k in j:
-        out[header_id[k]] = k
+    for (k, k1) in j:
+
+        out[header_id[k]] = k1
 
     print('\t'.join(out))
 
