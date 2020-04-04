@@ -36,9 +36,9 @@ for i in f0:
 
 
 print('\t'.join(h))
-tab = table.values()
+tab = list(table.values())
 tab.sort(key = lambda x: x[0])
-or i in tab:
+for i in tab:
     print('\t'.join(i))
 
 
