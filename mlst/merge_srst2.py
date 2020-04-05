@@ -34,6 +34,17 @@ for i in f0:
         if k1 != '-':
          table[j[0]][h_idx[k]] = k1
 
+for i in f1:
+    #break
+    j = i[:-1].split('\t')
+    if j[0] not in table:
+        table[j[0]] = ['-'] * len(h)
+        table[j[0]][0] = j[0]
+
+    for k, k1 in zip(h1[1:], j[1:]):
+        if k1 != '-':
+         table[j[0]][h_idx[k]] = k1
+
 
 print('\t'.join(h))
 tab = list(table.values())
