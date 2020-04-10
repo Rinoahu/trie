@@ -31,6 +31,13 @@ FIELD_LABELS,%s
 FIELD_COLORS,%s
 
 
+%sLEGEND_TITLE,Gene Typing
+%sLEGEND_SHAPES,2,2,2
+%sLEGEND_COLORS,#377EB8,#f76116,#00b300
+%sLEGEND_LABELS,Virulence Factor,Virulence Factor,no virulence
+
+
+
 MARGIN,50
 
 DATA
@@ -44,6 +51,30 @@ blue='#377EB8'
 
 first3 = set('EF,Muramidase-released_protein,sly'.split(','))
 
+first3 = 'vtaA1,vtaA2,vtaA3,vtaA4,vtaA5,vtaA6,vtaA7,vtaA8,vtaA9,vtaA10,vtaA11,vtaA12,vtaA13'.split(',')
+cols =  ['']
+
+# set color
+def set(first3, cols, hd):
+    fst3 = []
+    rest = []
+    for i in range(1, len(hd)):
+        if hd[i] in first3:
+            fst3.append(i)
+        else:
+            rest.append(i)
+
+    idx = [0] + fst3 + rest
+
+    a = ','.join(['2'] * n)
+
+    hd_new = [hd[elem] for elem in idx]
+    b = ','.join(hd_new[1:])
+
+    c = cols + [blue] * len(rest)
+    c = ','.join(c)
+    return a, b, c
+
 f = open(qry, 'r')
 hd = f.readline()[:-1].split('\t')
 n = len(hd[1:])
@@ -52,7 +83,7 @@ if _type == 're':
     a = ','.join(['2'] * n)
     b = ','.join(hd[1:])
     c = ','.join([red] * n)
-    print(header%('antibiotic', '#00ff00', a, b, c))
+    print(header%('antibiotic', '#00ff00', a, b, c, '#', '#', '#', '#'))
     
 
 elif _type == 'vf':
@@ -73,7 +104,7 @@ elif _type == 'vf':
 
     c = [orange] * len(fst3) + [blue] * len(rest)
     c = ','.join(c)
-    print(header%('VF', '#0000ff', a, b, c))
+    print(header%('VF', '#0000ff', a, b, c, '', '', '', ''))
 
 else:
     raise SystemExit()
