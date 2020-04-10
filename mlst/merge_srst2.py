@@ -32,6 +32,7 @@ for i in f0:
 
     for k, k1 in zip(h0[1:], j[1:]):
         if k1 != '-':
+        #if k1[0] != '-':
          table[j[0]][h_idx[k]] = k1
 
 for i in f1:
@@ -43,6 +44,7 @@ for i in f1:
 
     for k, k1 in zip(h1[1:], j[1:]):
         if k1 != '-':
+        #if k1[0] != '-':
          table[j[0]][h_idx[k]] = k1
 
 

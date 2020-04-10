@@ -9,6 +9,10 @@ except:
     print('python this.py qry dir')
     raise SystemExit()
 
+try:
+    outfile = sys.argv[3]
+except:
+    outfile = None
 
 def overlap(s1, e1, s2, e2):
     over_lap = min(e1, e2) - max(s1, s2) + 1
@@ -21,8 +25,8 @@ f.close()
 
 
 output = []
-for ref in [dir + '/' + elem for elem in os.listdir(dir) if elem.endswith('.fasta')]:
-    #os.system('legacy_blast.pl formatdb -i %s -p F | tee log.txt'%ref)
+for ref in [dir + '/' + elem for elem in os.listdir(dir) if elem.endswith('.fasta') or elem.endswith('_scf.fsa')]:
+    os.system('legacy_blast.pl formatdb -i %s -p F | tee log.txt'%ref)
     os.system('legacy_blast.pl blastall -m 8 -e 1e-10 -a 8 -p blastn -i %s -d %s -o %s.blast8 | tee log.txt'%(qry, ref, ref))
 
     blast_flt = {}
@@ -79,7 +83,18 @@ for i in header:
     header_id[i] = flag
     flag += 1
 
-print('\t'.join(header))
+if outfile:
+    _o = open(outfile, 'w')
+
+#print('\t'.join(header))
+
+hd = '\t'.join(header)
+if outfile:
+    _o.write(hd + '\n')
+
+else:
+    print(hd)
+
 for i, j in output:
     out = ['-'] * len(header)
     out[0] = i.split(os.sep)[-1].split('_')[0].split('.')[0]
@@ -87,7 +102,13 @@ for i, j in output:
 
         out[header_id[k]] = k1
 
-    print('\t'.join(out))
+    #print('\t'.join(out))
 
+    if outfile:
+        #_o.write()
+        _o.write('\t'.join(out) + '\n')
+    else:
+        print('\t'.join(out))
 
-
+if outfile:
+    _o.close()
