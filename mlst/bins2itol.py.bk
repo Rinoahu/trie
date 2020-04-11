@@ -48,22 +48,37 @@ DATA
 red='#E41A1C'
 orange='#f76116'
 blue='#377EB8'
-green='#00b300'
 
 first3 = set('EF,Muramidase-released_protein,sly'.split(','))
 
 first3 = 'vtaA1,vtaA2,vtaA3,vtaA4,vtaA5,vtaA6,vtaA7,vtaA8,vtaA9,vtaA10,vtaA11,vtaA12,vtaA13'.split(',')
+cols =  {}
 
-cols = {}
-for i in first3[:-2]:
-    cols[i] =  orange
+# set color
+def set(first3, cols={}, hd):
+    fst3 = []
+    fst3_dict = {}
+    rest = []
+    for i in range(1, len(hd)):
+        if hd[i] in first3:
+            fst3.append(i)
+            fst3_dict[hd[i]] = i
+        else:
+            rest.append(i)
 
-for i in first3[-2:]:
-    cols[i] = green
+    idx = [0] + fst3 + rest
 
-first3_dict = {}
-for i in range(len(first3)):
-    first3_dict[first3[i]] = i + 1
+    a = ','.join(['2'] * n)
+
+    hd_new = [hd[elem] for elem in idx]
+    b = ','.join(hd_new[1:])
+
+    c = [blue] * (len(rest) + len(fst3))
+    for k, v in cols.items():
+        c[fst3_dict[k]] = v
+
+    c = ','.join(c)
+    return a, b, c
 
 f = open(qry, 'r')
 hd = f.readline()[:-1].split('\t')
@@ -77,26 +92,22 @@ if _type == 're':
     
 
 elif _type == 'vf':
+    fst3 = []
+    rest = []
+    for i in range(1, len(hd)):
+        if hd[i] in first3:
+            fst3.append(i)
+        else:
+            rest.append(i)
 
-    first3_dict[hd[0]] = 0
-
-    hd_new = [[first3_dict.get(y, 10000), y, z]for z, y in enumerate(hd)]
-    hd_new.sort(key=lambda x: x[0])
-
-    #print('hd', hd)
-    #print('new', hd_new)
-    #print(hd[59], hd[64], hd[65])
+    idx = [0] + fst3 + rest
 
     a = ','.join(['2'] * n)
-    b = ','.join([y for x,y,z in hd_new[1:]])
-    idx = [z for x,y,z in hd_new]
-    c = [blue] * (len(hd))
-    for i in range(len(hd)):
-        x, y, z = hd_new[i]
-        c[i] = cols.get(y, blue)
 
-    c = c[1:]
+    hd_new = [hd[elem] for elem in idx]
+    b = ','.join(hd_new[1:])
 
+    c = [orange] * len(fst3) + [blue] * len(rest)
     c = ','.join(c)
     print(header%('VF', '#0000ff', a, b, c, '', '', '', ''))
 
