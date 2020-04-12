@@ -34,7 +34,7 @@ FIELD_COLORS,%s
 %sLEGEND_TITLE,Gene Typing
 %sLEGEND_SHAPES,2,2,2
 %sLEGEND_COLORS,#377EB8,#f76116,#00b300
-%sLEGEND_LABELS,Virulence Factor,Virulence Factor,no virulence
+%sLEGEND_LABELS,Virulence Factor,vtaA1-A11,vtaAA12-A13
 
 
 
